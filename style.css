@@ -1,0 +1,96 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 10px;
+}
+
+body {
+  font-size: 1.6rem;
+  font-family: "Montserrat", Helvetica, sans-serif;
+  background-color: #495464;
+  color: #f4f4f2;
+}
+
+h1 {
+  font-size: 3rem;
+  font-weight: 300;
+  text-align: center;
+  text-transform: uppercase;
+  padding: 3rem 0;
+}
+
+.wrapper {
+  width: 1024px;
+  min-height: 100vh;
+  height: 100%;
+  margin: 0 auto;
+  padding: 3rem;
+  box-sizing: border-box;
+  background-color: #1e2229;
+}
+
+.keyboard {
+  display: flex;
+  flex-wrap: wrap;
+  padding-top: 3rem;
+  justify-content: space-between;
+}
+
+.key {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  height: 3.5rem;
+  width: 3.5rem;
+  margin: 3px;
+  padding: 1rem;
+  border: 1px solid #f4f4f2;
+  color: #e8e8e8;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.3s all;
+}
+.key:hover {
+  background-color: #f4f4f2;
+  border-color: #bbbbbe;
+  color: #1e2229;
+}
+.key.active {
+  background-color: #bbbbbe;
+  border-color: #bbbbbe;
+  color: #1e2229;
+}
+.key.active:hover {
+  background-color: #87878c;
+  border-color: #87878c;
+}
+.key.space {
+  flex: 1;
+}
+.key.wide {
+  width: 10.5rem;
+}
+
+.description {
+  padding-top: 2rem;
+}
+
+.output-textarea {
+  resize: none;
+  overflow: overlay;
+  width: 100%;
+  height: 250px;
+  padding: 1rem;
+  background-color: #e8e8e8;
+  color: #495464;
+  box-sizing: border-box;
+  border-radius: 5px;
+  font-size: 2rem;
+  font-family: "Montserrat", Helvetica, sans-serif;
+}
+
+/*# sourceMappingURL=style.css.map */
