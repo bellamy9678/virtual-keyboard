@@ -167,6 +167,8 @@ class KeyboardView {
 const keyboard = new KeyboardView();
 keyboard.createKeyboard();
 const AREA = document.querySelector("#output");
+const KEYBOARD = document.querySelector(".keyboard");
+
 buttonsHandler();
 
 function buttonsHandler() {
@@ -174,15 +176,21 @@ function buttonsHandler() {
     const CAPSLOCK = document.querySelector(".key:nth-child(30)");
     capsControl();
 
-    window.addEventListener('keydown', () => {
-        const keyCode= event.keyCode;
-        keyboard.pushedButtons.add(keyCode);
-
-        if (keyCode == 20) {
+    window.addEventListener('keydown', (event) => {
+        keyboard.pushedButtons.add(event.keyCode);
+        
+        //caps lock
+        if (event.keyCode == 20) {
             capsControl(true);
             return;
         }
+    
+        handleActiveButton(event.keyCode, event.location);
 
+        /*
+        checkfunctional(event.keyCode);
+        checkSymbol(event.keyCode);
+        */
     })
     
     window.addEventListener("keyup", function(event) {
@@ -190,26 +198,56 @@ function buttonsHandler() {
           keyboard.changeLanguage();
         }
         keyboard.pushedButtons.delete(event.keyCode);
+        if (event.keyCode != 20) {
+            handleActiveButton(event.keyCode, event.location)
+        }
     });
 
-    function capsControl(isPushed = false) {
-        function capsLockStateUpdate() {
-            keyboard.isCapsLock = !keyboard.isCapsLock;
-            if (keyboard.isCapsLock) {
-            CAPSLOCK.classList.add("active");
-            keyboard.showUpperCase();
-            } else {
-            CAPSLOCK.classList.remove("active");
-            keyboard.showLowerCase();
-            }
-        }
-        if (isPushed) {
+    function capsControl(isKeyDown = false) {
+        if (isKeyDown) {
             capsLockStateUpdate();
             return;
         }
+        function capsLockStateUpdate() {
+            keyboard.isCapsLock = !keyboard.isCapsLock;
+            
+            if (keyboard.isCapsLock) {
+                CAPSLOCK.classList.add("active");
+                keyboard.showUpperCase();
+            } else {
+                CAPSLOCK.classList.remove("active");
+                keyboard.showLowerCase();
+            }
+        }
         CAPSLOCK.addEventListener("click", capsLockStateUpdate);
     }
-    
+
+    function handleActiveButton(keyCode, location) {
+        let position = getPosition(keyCode, location);
+        let elem = KEYBOARD.querySelector(`.key:nth-child(${position + 1})`);
+        changeActiveStatus(elem, keyCode);
+    }
+
+    function getPosition(keyCode, location) {
+        if (location == 0) {
+            return ARRAY_OF_KEY_CODES.findIndex( (element) => {
+                return keyCode == element;
+            }) 
+        } else {
+            return ARRAY_OF_KEY_CODES.findIndex( (element) => {
+                return (keyCode == element[0]) && (location == element[1]);
+            });
+        }
+    }
+
+    function changeActiveStatus(elem, keyCode) {
+        if (keyboard.pushedButtons.has(keyCode)) {
+            elem.classList.add('active')
+        } else {
+            elem.classList.remove('active')
+        }
+
+    }
 
 }
 
