@@ -49,25 +49,31 @@ h1 {
   width: 3.5rem;
   margin: 3px;
   padding: 1rem;
-  border: 1px solid #f4f4f2;
-  color: #e8e8e8;
   border-radius: 10px;
   cursor: pointer;
-  transition: 0.3s all;
+  transition: 0.25s all;
+  background-color: #1e2229;
+  border: 1px solid #bbbbbe;
+  color: #bbbbbe;
 }
 .key:hover {
-  background-color: #f4f4f2;
-  border-color: #bbbbbe;
-  color: #1e2229;
+  background-color: #495464;
 }
 .key.active {
   background-color: #bbbbbe;
   border-color: #bbbbbe;
   color: #1e2229;
+  border-radius: 15px;
 }
 .key.active:hover {
   background-color: #87878c;
   border-color: #87878c;
+}
+.key.pushed {
+  background-color: #bbbbbe;
+  border-color: #bbbbbe;
+  color: #1e2229;
+  border-radius: 15px;
 }
 .key.space {
   flex: 1;
@@ -78,6 +84,7 @@ h1 {
 
 .description {
   padding-top: 2rem;
+  user-select: none;
 }
 
 .output-textarea {
@@ -92,6 +99,10 @@ h1 {
   border-radius: 5px;
   font-size: 2rem;
   font-family: "Montserrat", Helvetica, sans-serif;
+}
+.output-textarea::selection {
+  background-color: #495464;
+  color: #e8e8e8;
 }
 
 /*# sourceMappingURL=style.css.map */
