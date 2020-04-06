@@ -37,6 +37,7 @@ h1 {
   flex-wrap: wrap;
   padding-top: 3rem;
   justify-content: space-between;
+  user-select: none;
 }
 
 .key {
