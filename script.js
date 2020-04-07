@@ -401,6 +401,10 @@ class VirtualKeyboard {
         return;
       }
 
+      if ( id == 57 || id == 58 || id == 60 ){
+        return;
+      }
+
       if (id == 56 || id == 61 ){
         ctrlClickHandler();
         return;
@@ -413,6 +417,8 @@ class VirtualKeyboard {
       event.preventDefault();
       const lang = getCurrentLanguageKeyboardCodes();
       const id = getElementIdByKeyCodeAndLocation(lang, event.keyCode, event.location);
+
+      console.log(event.keyCode);
       
       if (id != -1) {
         let elem = KEYBOARD.querySelector(`.key:nth-child(${id + 1})`);
@@ -455,6 +461,10 @@ class VirtualKeyboard {
     
       if (id == 28){
         deleteHandler();
+        return;
+      }
+
+      if ( id == 57 || id == 58 || id == 60 ){
         return;
       }
     
