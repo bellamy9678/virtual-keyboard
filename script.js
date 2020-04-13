@@ -1,4 +1,4 @@
-class CreateDOMElements {
+class CreateDomElements {
   constructor() {
     this.container;
   }
@@ -47,7 +47,7 @@ class CreateDOMElements {
     this.container.querySelector(".keyboard-container").appendChild(elem);
   }
 
-  CreateDOM() {
+  CreateDom() {
     this.createContainer();
     this.createHeader();
     this.createContainerForInputAndKeyboard();
@@ -58,8 +58,8 @@ class CreateDOMElements {
   }
 }
 
-const application = new CreateDOMElements();
-document.querySelector("body").appendChild(application.CreateDOM());
+const application = new CreateDomElements();
+document.querySelector("body").appendChild(application.CreateDom());
 
 class VirtualKeyboard {
   
@@ -70,6 +70,8 @@ class VirtualKeyboard {
     createKeys() {
       let outCollection = document.createDocumentFragment();
       const BUTTON_AMOUNT = 65;
+      const WIDE_BUTTONS_ID = [13,29,41,42,56];
+      const SPACE_ID = 59;
 
       for (let i = 0; i < BUTTON_AMOUNT; i++) {
         let key = document.createElement("div");
@@ -78,10 +80,10 @@ class VirtualKeyboard {
 
         key.innerHTML = i;
 
-        if (i == 13 || i == 29 || i == 41 || i == 42 || i == 56) {
+        if (WIDE_BUTTONS_ID.indexOf(i) != -1) {
           key.classList.add("wide");
         }
-        if (i == 59) {
+        if (i == SPACE_ID) {
           key.classList.add("space");
         }
         outCollection.appendChild(key);
@@ -94,13 +96,13 @@ class VirtualKeyboard {
       return outCollection;
     }
   
-    insertKeyboardInDOM(buttons) {
+    insertKeyboardInDom(buttons) {
       document.querySelector(".keyboard").appendChild(buttons);
     }
   
     createKeyboard() {
       let buttons = this.createKeys();
-      this.insertKeyboardInDOM(buttons);
+      this.insertKeyboardInDom(buttons);
       return this;
     }
   
@@ -160,12 +162,22 @@ class VirtualKeyboard {
     updateKeyboard();
     
     function getElementIdByKeyCodeAndLocation (abcObjectsArray, keyCode, location = 0) {
+      
       for (let i = 0; i < abcObjectsArray.length; i++) {
         if (abcObjectsArray[i].keyCode == keyCode && abcObjectsArray[i].location == location) {
           return i;
         }
       }
       return -1;
+      
+      /*
+      const keyCodePos = abcObjectsArray.map( el => el.keyCode ).indexOf(keyCode);
+      console.log(keyCodePos, abcObjectsArray);
+      if (abcObjectsArray[keyCodePos].location == location) {
+        return keyCodePos;
+      }
+      return -1;
+      */
     }
 
     function getCurrentLanguageKeyboardCodes () {
@@ -370,42 +382,50 @@ class VirtualKeyboard {
     
     function keyboardClickHandler(event) {
       let id = event.target.dataset.id;
-      
-      if (id == 29){
+      const CAPS_ID = 29,
+            TAB_ID = 14,
+            ENTER_ID = 41,
+            BACKSPACE_ID = 13,
+            DELETE_ID = 28,
+            SHIFT_ID_ARR = [42,55],
+            CTRL_ID_ARR = [56,61],
+            FUNC_BUTTONS_ID_ARR = [57,58,60];
+
+      if (id == CAPS_ID){
         capsLockClickHandler(event);
         return;
       }
     
-      if (id == 14){
+      if (id == TAB_ID){
         tabHandler();
         return;
       }
     
-      if (id == 41){
+      if (id == ENTER_ID){
         enterHandler();
         return;
       }
     
-      if (id == 13){
+      if (id == BACKSPACE_ID){
         backspaceHandler();
         return;
       }
     
-      if (id == 28){
+      if (id == DELETE_ID){
         deleteHandler();
         return;
       }
     
-      if (id == 42 || id == 55 ){
+      if (SHIFT_ID_ARR.indexOf(id) != -1) {
         shiftClickHandler();
         return;
       }
 
-      if ( id == 57 || id == 58 || id == 60 ){
+      if (FUNC_BUTTONS_ID_ARR.indexOf(id) != -1){
         return;
       }
 
-      if (id == 56 || id == 61 ){
+      if (CTRL_ID_ARR.indexOf(id) != -1){
         ctrlClickHandler();
         return;
       } else {
@@ -416,10 +436,7 @@ class VirtualKeyboard {
     window.addEventListener('keydown', (event) => {
       event.preventDefault();
       const lang = getCurrentLanguageKeyboardCodes();
-      const id = getElementIdByKeyCodeAndLocation(lang, event.keyCode, event.location);
-
-      console.log(event.keyCode);
-      
+      const id = getElementIdByKeyCodeAndLocation(lang, event.keyCode, event.location);      
       if (id != -1) {
         let elem = KEYBOARD.querySelector(`.key:nth-child(${id + 1})`);
         keydownHandler(elem, id);
@@ -438,42 +455,51 @@ class VirtualKeyboard {
     })
 
     function keydownHandler(elem, id) {
+      const CAPS_ID = 29,
+            TAB_ID = 14,
+            ENTER_ID = 41,
+            BACKSPACE_ID = 13,
+            DELETE_ID = 28,
+            SHIFT_ID_ARR = [42,55],
+            CTRL_ID_ARR = [56,61],
+            FUNC_BUTTONS_ID_ARR = [57,58,60];
+
       setActiveStyle(elem);
     
-      if (id == 29){ //CAPS
+      if (id == CAPS_ID){
         return;
       }
     
-      if (id == 14){
+      if (id == TAB_ID){
         tabHandler();
         return;
       }
     
-      if (id == 41){
+      if (id == ENTER_ID){
         enterHandler();
         return;
       }
     
-      if (id == 13){
+      if (id == BACKSPACE_ID){
         backspaceHandler();
         return;
       }
     
-      if (id == 28){
+      if (id == DELETE_ID){
         deleteHandler();
         return;
       }
 
-      if ( id == 57 || id == 58 || id == 60 ){
+      if (FUNC_BUTTONS_ID_ARR.indexOf(id) != -1){
         return;
       }
     
-      if (id == 42 || id == 55 ){
+      if (SHIFT_ID_ARR.indexOf(id) != -1){
         shiftKeydownHandler(elem);
         return;
       }
 
-      if (id == 56 || id == 61 ){
+      if (CTRL_ID_ARR.indexOf(id) != -1){
         ctrlKeydownHandler(elem);
         return;
       } else {
@@ -482,19 +508,23 @@ class VirtualKeyboard {
     } // end of function keydownHandler() 
 
     function keyupHandler(elem, id) {
+      const CAPS_ID = 29,
+            SHIFT_ID_ARR = [42,55],
+            CTRL_ID_ARR = [56,61];
+
       removeActiveStyle(elem);
 
-      if (id == 29){
+      if (id == CAPS_ID){
         capsLockKeyupHandler(elem);
         return;
       }
     
-      if (id == 42 || id == 55 ){
+      if (SHIFT_ID_ARR.indexOf(id) != -1){
         shiftKeyupHandler(elem);
         return;
       }
 
-      if (id == 56 || id == 61 ){
+      if (CTRL_ID_ARR.indexOf(id) != -1){
         ctrlKeyupHandler(elem);
         return;
       }
@@ -527,28 +557,33 @@ class VirtualKeyboard {
       updateKeyboard();
     }
 
-    function shiftKeydownHandler(elem) {
+    function shiftKeydownHandler() {
+      const SHIFT_KEYCODE = 16;
+
       isShift = true;
       updateKeyboard();
-      pushedButtons.add(16);
+      pushedButtons.add(SHIFT_KEYCODE);
     }
 
-    function shiftKeyupHandler(elem) {
+    function shiftKeyupHandler() {
+      const SHIFT_KEYCODE = 16;
       isShift = false;
       updateKeyboard();
       checkKeyboardLanguage();
-      pushedButtons.delete(16);
+      pushedButtons.delete(SHIFT_KEYCODE);
       cleanCtrlAndShift();
     }
 
-    function ctrlKeydownHandler(elem) {
-      pushedButtons.add(17);
+    function ctrlKeydownHandler() {
+      const CTRL_KEYCODE = 17;
+      pushedButtons.add(CTRL_KEYCODE);
     }
 
-    function ctrlKeyupHandler(elem) {
+    function ctrlKeyupHandler() {
+      const CTRL_KEYCODE = 17;
       updateKeyboard();
       checkKeyboardLanguage();
-      pushedButtons.delete(17);
+      pushedButtons.delete(CTRL_KEYCODE);
       cleanCtrlAndShift();
     }
 
@@ -563,11 +598,13 @@ class VirtualKeyboard {
     }
 
     function checkKeyboardLanguage() {
-      if (pushedButtons.has(16) && pushedButtons.has(17)) {
+      const SHIFT_KEYCODE = 16,
+            CTRL_KEYCODE = 17;
+      if (pushedButtons.has(SHIFT_KEYCODE) && pushedButtons.has(CTRL_KEYCODE)) {
         updateSessionStorage();
         updateKeyboard();
-        pushedButtons.delete(16);
-        pushedButtons.delete(17);
+        pushedButtons.delete(SHIFT_KEYCODE);
+        pushedButtons.delete(CTRL_KEYCODE);
         cleanCtrlAndShift();
       }
     }
