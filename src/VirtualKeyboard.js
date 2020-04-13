@@ -141,13 +141,7 @@ export default class VirtualKeyboard {
     updateKeyboard();
 
     function getElementIdByKeyCodeAndLocation(abcObjectsArray, keyCode, location = 0) {
-      for (let i = 0; i < abcObjectsArray.length; i += 1) {
-        if (abcObjectsArray[i].keyCode === keyCode
-          && abcObjectsArray[i].location === location) {
-          return i;
-        }
-      }
-      return -1;
+      return abcObjectsArray.findIndex((el) => el.keyCode === keyCode && el.location === location);
     }
 
     function print(something) {
